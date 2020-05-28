@@ -13,10 +13,10 @@ import java.awt.image.BufferedImage;
  */
 public class Mario extends Canvas implements Runnable
 {
-    public boolean running = false;
+    public boolean running;
     public boolean up, down, left, right; // player movement
-    public static boolean go; //start motion
-    public boolean motion = true;
+    //public static boolean go; //start motion
+    //public boolean motion = true;
     public static final int width = 1035, height = 715; // JFrame dimensions
     BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     Dimension dim = new Dimension(width, height);
@@ -26,52 +26,25 @@ public class Mario extends Canvas implements Runnable
     InputHandler ih;
     Platform pf;
     Character ch;
-    Items shroom;
-    Items shroom2;
-    public static double speed = 10;
-    public static double jspeed = 15;
-    double FPS, UPS, frames, ticks, delta;
-    boolean shouldRender;
+    Items shroom, shroom2;
+    public static double speed = 10, jspeed = 15; // Player movement speeds.
+    private double FPS, UPS, frames, ticks, delta;
+    private boolean shouldRender;
 
-    public int score;
-    public int coins;
-    public int lives = 4;
+    // Game Fields.
+    public int score, coins, lives = 4;
     public String name;
-    public boolean jump;
-    public boolean moving;
-    public boolean finish;
-    public boolean scroll = true;
+    public boolean jump, moving, finish, gameover, scroll = true;
     public long timer, startTime;
     public Enemy[] enemy;
-    private Enemy testGoomba;
-    private Enemy testKoopa;
+    private Enemy testGoomba, testKoopa;
     public boolean died;
-    private int obsolete = 0;
-    private int obsolete2 = 0;
-    private int tickTimer = 0;
-    public boolean gameover;
+    private int obsolete = 0, obsolete2 = 0, tickTimer = 0;
     private boolean bandaid = false;
 
+    // Sound Fields.
     private GameSound coinSound, deathSound, gameoverSound, endSound, mainSound;
     private GameSound jumpSound, flagpoleSound, powerUpSound, powerDownSound;
-
-    /*
-    File coinSound = new File("res/Coin_Sound.wav");
-    File deathSound = new File("res/Death_Sound.wav");
-    File gameoverSound = new File("res/Gameover_Sound.wav");
-    File endSound = new File("res/End_Sound.wav");
-    File mainSound = new File("res/Main_Sound.wav");
-    File jumpSound = new File("res/Jump_Sound.wav");
-    File flagpoleSound = new File("res/Flag_Pole_Sound.wav");
-    File powerUpSound = new File("res/Power_Up_Sound.wav");
-    File powerDownSound = new File("res/Power_Down_Sound.wav");
-    File extraSound = new File("res/Extra_Sound_;).wav");
-    private AudioInputStream aisCoin, aisDeath, aisGameover, aisEnd, aisMain;
-    private AudioInputStream aisJump, aisFlag, aisPUp, aisPDown, aisExtra;
-    public Clip clipCoin, clipDeath, clipGameover, clipEnd, clipMain;
-    public Clip clipJump, clipFlagPole, clipPU, clipPD, clipExtra;
-    private boolean fileLoaded;
-    */
 
     /** Run method to control framerate.
      *  Main Game Thread.
@@ -164,12 +137,6 @@ public class Mario extends Canvas implements Runnable
                 bandaid = true;
                 playSound(GameSound.MAIN_SOUND);
             }
-            /*
-            else if(clipMain.getMicrosecondPosition() == clipMain.getMicrosecondLength()){
-                tickTimer = 0;
-                //clipMain.setMicrosecondPosition(0);
-                playSound("Main");
-            }*/
         }
         if(pf != null){
             pf.checkCollision();
@@ -202,7 +169,6 @@ public class Mario extends Canvas implements Runnable
                     lives--;
                     playSound(GameSound.DEATH_SOUND);
                     mainSound.stop();   // Stops Main Soundtrack in event of Death.
-                    //clipMain.stop();
                 }
                 else if(obsolete == 183){
                     ch.setLocation(300, 500);
@@ -221,7 +187,7 @@ public class Mario extends Canvas implements Runnable
                 gameover = true;
             }
         }
-        if(finish||gameover){
+        if(finish || gameover){
             obsolete2++;
             if(obsolete2 == 1){
                 mainSound.stop();   // Stops Main Soundtrack.

@@ -1,38 +1,39 @@
 package com.Mario;
 
 import java.awt.*;
-//import java.awt.image.BufferedImage;
-//import java.awt.geom.*;
 
 /**
  * A Block object.
  * Contains attributes of a Block and renders a Block.
- * Dan Bauer.
+ * @author Dan Bauer.
  */
 public class Blocks
 {
+    // Block ID's
+    public static final int MYSTERY = 0;
+    public static final int BRICK = 1;
+    public static final int GROUND = 2;
+    public static final int BLOCK = 3;
+    public static final int STONE = 4;
+    public static final int PIPE_L = 5;
+    public static final int PIPE_R = 6;
+    public static final int PIPE_TOP_L = 7;
+    public static final int PIPE_TOP_R = 8;
+    public static final int TEST = 99;
+
     private String type;
     private int x, y;
     private int coins, score;
-    //Graphics g;
     public int hits = 8;
 
     // Default Brown color for blocks.
     public static Color brown = new Color(130, 76, 40);
 
-    /* Second Constructor. UNUSED. Set for Removal.
-    public Blocks(String type, int x, int y, Graphics g)
-    {
-        this.type = type.toUpperCase();
-        this.x = x;
-        this.y = y;
-        this.g = g;
-    }
-    */
-
     /**
      * Constructor for objects of class Blocks
-     * @param type of block, x and y cordinates, and g
+     * @param type of Block.
+     * @param x Integer Coordinate.
+     * @param y Integer Coordinate.
      */
     public Blocks(String type, int x, int y)
     {
@@ -181,11 +182,22 @@ public class Blocks
 
     public void checkCollision(int px, int py)
     {
+        Rectangle bounds = new Rectangle();
+
+
+
+
         if(px > x - 40 && px < x + 50){
             if(py > y + 20 && py <= y + 50){
                 action();
             }
         }
     }
+
+    public Rectangle getBounds()
+    {
+        return new Rectangle(x, y, 50, 50);
+    }
+
 }
 
