@@ -65,7 +65,7 @@ public class Character
                     y -= mario.jspeed;
                     obsolete--;
                     if(obsolete == 14)
-                        mario.playSound("Jump");
+                        mario.playSound(GameSound.JUMP_SOUND);
                 }
                 else{
                     obsolete = 15;
@@ -639,7 +639,7 @@ public class Character
 
     /**
      * character gravity of sorts
-     * @param falls till stop
+     * @param stop Integer of when to stop falling.
      */
     public void fall(int stop)
     {

@@ -76,13 +76,12 @@ public class Platform
         int turns = 10;
         if(block.getType().equals("MYSTERY")){
             if(function.toUpperCase().equals("COIN")){
-                mario.clipCoin.setMicrosecondPosition(0);
-                mario.playSound("Coin");
+                mario.playSound(GameSound.COIN_SOUND);
                 mario.coins++;
                 mario.score += 100;
             }
             else if(function.equals("COIN+")){
-                mario.playSound("Coin");
+                mario.playSound(GameSound.COIN_SOUND);
                 mario.coins++;
                 mario.score += 100;
                 if(block.hits > 1){
@@ -101,8 +100,8 @@ public class Platform
             }
         }
         else if(block.getType().equals("BRICK")){
-            mario.clipMain.stop();
-            mario.playSound("EXTRA");
+            //mario.clipMain.stop();
+            //mario.playSound("EXTRA");
             mario.score += 1000;
         }
         if(block.hits != 1){
