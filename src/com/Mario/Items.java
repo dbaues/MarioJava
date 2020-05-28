@@ -45,13 +45,12 @@ public class Items
             int chX = mario.ch.getX();  // Gets the players coordinates.
             int chY = mario.ch.getY();
 
-            if(chX > x - 40 && chX < x + 50){   // Checks if player collided with Item Hit Box.
-                if(chY > y - 40 && chY < y){
-                    mario.ch.big = true;
-                    used = true;
-                    mario.playSound(GameSound.POWERUP_SOUND);
-                    mario.score += 1000;
-                }
+            Rectangle bounds = new Rectangle(x, y, 90, 50);
+            if(bounds.contains(chX, chY)){  // Checks to see if Player has entered the Item Hit box.
+                mario.ch.big = true;
+                used = true;
+                mario.playSound(GameSound.POWERUP_SOUND);
+                mario.score += 1000;
             }
         }
     }
@@ -63,7 +62,7 @@ public class Items
     public void render(Graphics g)
     {
         //Graphics2D g2 = (Graphics2D) g;
-        if(!used)
+        if(!used)   // If this Item has not been used previously.
             Sprites.renderMushroom(x, y, g);
     }
 }

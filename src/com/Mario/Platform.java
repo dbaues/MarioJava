@@ -292,7 +292,7 @@ public class Platform
     public void renderBack(Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(new Color(165, 253, 255));
+        g2.setColor(new Color(165, 253, 255)); // Background Color.
         g2.fillRect(0,0,mario.getWidth(),mario.getHeight());
     }
 
@@ -304,6 +304,12 @@ public class Platform
         int chX = mario.ch.getX();
         int chY = mario.ch.getY();
         for(Blocks block :  blocks){
+            Rectangle bounds = block.getBounds();
+
+
+
+
+
             /*if(chX > block.getX() - 40 && chX < block.getX() + 50){
             if(chY > block.getY() + 20 && chY <= block.getY() + 90){
             block.action();
