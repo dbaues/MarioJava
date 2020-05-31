@@ -1,17 +1,13 @@
 package com.Mario;
 
-/**
- * Renders the platforms
- *
- * @Daniel Bauer
- * @5/26/18
- */
-
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.geom.*;
 import java.util.ArrayList;
 
+/**
+ * Class representing the Game Stage.
+ * Renders Stage and Moves Stage.
+ * @author Dan Bauer
+ */
 public class Platform
 {
     Blocks block;
@@ -76,12 +72,12 @@ public class Platform
         int turns = 10;
         if(block.getType().equals("MYSTERY")){
             if(function.toUpperCase().equals("COIN")){
-                mario.playSound(GameSound.COIN_SOUND);
+                mario.playSound(GameSound.COIN_SOUND_ID);
                 mario.coins++;
                 mario.score += 100;
             }
             else if(function.equals("COIN+")){
-                mario.playSound(GameSound.COIN_SOUND);
+                mario.playSound(GameSound.COIN_SOUND_ID);
                 mario.coins++;
                 mario.score += 100;
                 if(block.hits > 1){
@@ -93,10 +89,11 @@ public class Platform
                 }
             }
             else if(function.toUpperCase().equals("MUSHROOM")){
+                // Creates Mushroom Items.
                 if(mario.shroom == null)
-                    mario.shroom = new Items(x + block.getX() + 5, block.getY() - 40, mario);
+                    mario.items.add(new Items(x + block.getX() + 5, block.getY() - 40, Items.MUSHROOM, mario));
                 else if(mario.shroom2 == null)
-                    mario.shroom2 = new Items(x + block.getX() + 5, block.getY() - 40, mario);
+                    mario.items.add(new Items(x + block.getX() + 5, block.getY() - 40, Items.MUSHROOM, mario));
             }
         }
         else if(block.getType().equals("BRICK")){
@@ -110,15 +107,19 @@ public class Platform
     }
 
     /**
-     * draws platform elements
+     * Renders Platform Elements.
      */
     public void render(Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
+
+        // Renders back and each Block.
+        this.renderBack(g);
         for(Blocks block : blocks){
             block.render(x + block.getX(), g);
         }
 
+        // Renders End of level flag and flag pole.
         g2.setColor(Color.BLACK);
         g2.fillRect(x + b + 2920, y + 150, 10, 450);
         g2.setColor(Color.GRAY);
@@ -133,9 +134,14 @@ public class Platform
         int[] ys = {flagY, flagY, flagY + 50};
         Polygon flag = new Polygon(xs, ys, 3);
         g2.fill(flag);
-        //Test.paintComponent(100, 300));
     }
 
+    /**
+     * Loads the Blocks into the stage List.
+     * SOON - Change this to a File Format.
+     * @param x Default Coordinate.
+     * @param y Default Coordinate.
+     */
     public void createStage(int x, int y)
     {
         for(int i = 0; i < 67; i++){
@@ -287,9 +293,9 @@ public class Platform
     }
 
     /**
-     * Creates background screen
+     * Creates background screen.
      */
-    public void renderBack(Graphics g)
+    private void renderBack(Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(new Color(165, 253, 255)); // Background Color.
@@ -297,44 +303,44 @@ public class Platform
     }
 
     /**
-     * checks collision
+     * Checks Collisions.
      */
     public void checkCollision()
     {
+        // Players Coordinates.
         int chX = mario.ch.getX();
         int chY = mario.ch.getY();
+
+        // Checks Block collisions.
         for(Blocks block :  blocks){
             Rectangle bounds = block.getBounds();
-
-
-
-
-
-            /*if(chX > block.getX() - 40 && chX < block.getX() + 50){
-            if(chY > block.getY() + 20 && chY <= block.getY() + 90){
-            block.action();
-            }
-            }*/
             block.checkCollision(chX, chY);
         }
+
+        if(chY < 10){ mario.finish = true; }
     }
 
     /**
-     * moves the board to simulate the mario character motion sytle
+     * Executes on every tick.
+     * Moves the stage to simulate lateral player movement.
      */
     public void tick()
     {
+        // Checks the Platform collisions.
+        this.checkCollision();
 
         if(!mario.finish){
-            if(mario.left){ // if the player presses left
-                if(x < 0)
-                    x += mario.speed; //player goes left
-            }
-            if(mario.right) // if the player press right
-                x -= mario.speed; //player goes right
+            // When the Player pressed LEFT or A.
+            if(mario.left && x < 0)
+                x += mario.speed; // Stage moves Left (Actually right).
+            // When the Player presses RIGHT or D.
+            if(mario.right)
+                x -= mario.speed; // Stage moves Right (Actually left).
         }
+
+        // Lowers Flag on ending.
         if(mario.finish && flagY < y + 550)
-            flagY += flagSpeed;
+            flagY += Platform.flagSpeed;
     }
 }
 

@@ -112,11 +112,56 @@ public class Sprites
         }*/
     }
 
+    /**
+     * Renders Default Item.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param g Graphics instance.
+     */
+    public static void renderDefaultItem(int x, int y, Graphics g)
+    {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.BLACK);
+        g2.fillRect(x, y, 40, 40);
+    }
+
+    /**
+     * Renders Mushroom Item.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param g Graphics Instance.
+     */
     public static void renderMushroom(int x, int y, Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.ORANGE);
-        g2.fillRect(x, y, 40, 40);
+
+        Sprites.renderDefaultItem(x, y, g);
+    }
+
+    /**
+     * Renders 1-Up Mushroom Item.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param g Graphics Instance.
+     */
+    public static void render1Up(int x, int y, Graphics g)
+    {
+        Graphics2D g2 = (Graphics2D) g;
+
+        Sprites.renderDefaultItem(x, y, g);
+    }
+
+    /**
+     * Renders Fire Flower Item.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param g Graphics Instance.
+     */
+    public static void renderFireFlower(int x, int y, Graphics g)
+    {
+        Graphics2D g2 = (Graphics2D) g;
+
+        Sprites.renderDefaultItem(x, y, g);
     }
 
     public static void renderGoomba(int x, int y, Graphics g)

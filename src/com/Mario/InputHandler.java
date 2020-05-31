@@ -1,79 +1,94 @@
 package com.Mario;
 
-/**
- * Key listener event handler
- *
- * @Daniel Bauer
- * @5/24/18
- */
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.Canvas;
 import javax.swing.JFrame;
 
+/**
+ * KeyListener for Mario Game.
+ * @author Dan Bauer
+ */
 public class InputHandler implements KeyListener
 {
     Mario mario;
-    int preset;
-    //private int up, down, left, right;
-    /** Constructor
-     * @param JFrame, canvas, WHG (this, this - for last two)
+
+    /** Constructor for the Input Handler.
+     * (*, this, this - for last two)
+     * @param f JFrame of the current JFrame instance.
+     * @param c Canvas of the current Canvas instance.
+     *          Mario Class is a subclass of Canvas.
+     * @param m Main Game instance.
      */
     public InputHandler(JFrame f, Canvas c, Mario m)
     {
-        mario = m;
-        f.addKeyListener(this); // adds key listener to the frame
-        c.addKeyListener(this); // adds key listener to the drawn objects (canvas)
-        //preset = 1;
+        this.mario = m;
+        f.addKeyListener(this); // Adds KeyListener to Frame.
+        c.addKeyListener(this); // Adds KeyListener to Canvas.
     }
 
-    /** Method keyPressed - does when certain keys are pressed
-     *
+    /**
+     * Method keyPressed - Executes when certain keys are pressed.
      */
-    public void keyPressed(KeyEvent e){
+    public void keyPressed(KeyEvent e)
+    {
         int keyCode = e.getKeyCode();
-        if(keyCode == KeyEvent.VK_UP && mario.jump) // if up arrow is pressed
-            mario.up = true; // up boolean is true (player 2 will go up)
-        if(keyCode == KeyEvent.VK_DOWN){ // if down arrow is pressed
-            mario.down = true; // down boolean is true (player 2 will go down)
-            //mario.moving = true;
-        }
+        // When the UP ARROW or W KEY is pressed.
+        if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W /*&& mario.jump*/)
+            mario.up = true; // Up boolean. Moves Player up.
+
+        // When the DOWN ARROW or S KEY is pressed.
+        if(keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S)
+            mario.down = true; // Down boolean. Moves Player down.
+
         if(mario.scroll){
-            if(keyCode == KeyEvent.VK_LEFT){ // if w key is pressed
-                mario.left = true; // up boolean is true (player 1 will go up)
+            // When the LEFT ARROW or A KEY is pressed.
+            if(keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_A){
+                mario.left = true; // Left Boolean. Player goes Left (In actuality, Stage moves).
                 mario.moving = true;
             }
-            if(keyCode == KeyEvent.VK_RIGHT){ // if right arrow key is pressed
-                mario.right = true; // s boolean is true (player 1 will go down)
+            // When the RIGHT ARROW or D KEY is pressed.
+            if(keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_D){
+                mario.right = true; // Right Boolean. Player goes Right (In actuality, Stage moves).
                 mario.moving = true;
             }
         }
+
+        // Toggles debugging info when TAB is pressed.
+        if(keyCode == KeyEvent.VK_P)
+            mario.debuggingMode = !mario.debuggingMode;
     }
 
-    /** Method keyReleased - instructions for when user releases the key
-     *
+    /**
+     * Method keyReleased - Executes when user releases the key.
      */
-    public void keyReleased(KeyEvent e){
+    public void keyReleased(KeyEvent e)
+    {
         int keyCode = e.getKeyCode();
-        if(keyCode == KeyEvent.VK_UP){ // if up arrow is released
-            mario.up = false; // up boolean is false (player 2 will stop going up)
-            mario.jump = false;
+        // When UP ARROW or W KEY is released.
+        if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W){
+            mario.up = false; // Up Motion will stop.
+            //mario.jump = false;
         }
-        if(keyCode == KeyEvent.VK_DOWN) //if down arrow is released
-            mario.down = false; // down boolean is false (player 2 will stop going down)
-        if(keyCode == KeyEvent.VK_LEFT){ // if w key is released
-            mario.left = false; // w boolean is false (player 1 will stop going up)
+        // When DOWN ARROW or S KEY is released.
+        if(keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S)
+            mario.down = false; // Down Motion will stop.
+
+        // When LEFT ARROW or A KEY is released.
+        if(keyCode == KeyEvent.VK_LEFT || keyCode == KeyEvent.VK_A){
+            mario.left = false; // Left Motion will stop.
             mario.moving = false;
         }
-        if(keyCode == KeyEvent.VK_RIGHT){ // if s key is released
-            mario.right = false; // s key is false (player 1 will stop going down)
+        // When RIGHT ARROW or D KEY is released.
+        if(keyCode == KeyEvent.VK_RIGHT || keyCode == KeyEvent.VK_D){
+            mario.right = false; // Right Motion will stop.
             mario.moving = false;
         }
     }
 
-    /** Method that is required to compile, but has no function
-     *
+    /**
+     * Method that is required to compile. Has no function.
+     * Part of the interface implementation.
      */
     public void keyTyped(KeyEvent e){}
 }
