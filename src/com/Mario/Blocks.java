@@ -23,8 +23,10 @@ public class Blocks
     public static final int PIPE_R = 6;
     public static final int PIPE_TOP_L = 7;
     public static final int PIPE_TOP_R = 8;
+    public static final int TRANSPARENT = 98;
     public static final int TEST = 99;
 
+    // Blocks Fields.
     private String type;
     private int x, y;
     private int coins, score, typeID;
@@ -48,7 +50,7 @@ public class Blocks
     }
 
     // Return methods.
-    public int getHits() { return hits; }
+    //public int getHits() { return hits; }
 
     public int getX() { return x; }
 
@@ -56,9 +58,9 @@ public class Blocks
 
     public String getType() { return type; }
 
-    public int getCoins() { return coins; }
+    //public int getCoins() { return coins; }
 
-    public int getScore() { return score; }
+    //public int getScore() { return score; }
 
     public void action()
     {
@@ -71,19 +73,24 @@ public class Blocks
     }
 
     /**
+     * Updates the Blocks location.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     */
+    public void tick(int x, int y)
+    {
+        this.x = x;
+        this.y = y;
+    }
+
+    /**
      * Draws the block based on type
      */
     public void render(int x, Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
         int scale = Blocks.SCALE;
-
-        // Draws Background per block.
-        g2.setColor(Color.BLACK);
-        if((type.equals("PIPE_L"))||(type.equals("PIPE_R")))
-            g2.fillRect(0,0,0,0);
-        else
-            g2.fillRect(x, y, 50, 50);
+        typeID = Blocks.TRANSPARENT; // Implement Type ID from file.
 
         // Draws an Individual Block.
         // Draws proper Original Super Mario Bros Blocks.
@@ -192,7 +199,7 @@ public class Blocks
                 g2.fillRect(x, y+(scale), scale, 14*scale);
                 g2.fillRect(x+(scale), y+(2*scale), scale, 12*scale);
                 g2.fillRect(x+(2*scale), y+(3*scale), scale, 10*scale);
-                g2.fillRect(x+(3*scale), y+(8*scale), scale, 8*scale);
+                g2.fillRect(x+(3*scale), y+(4*scale), scale, 8*scale);
                 g2.fillRect(x+(scale), y, 14*scale, scale);
                 g2.fillRect(x+(2*scale), y+(scale), 12*scale, scale);
                 g2.fillRect(x+(3*scale), y+(2*scale), 10*scale, scale);
@@ -213,21 +220,20 @@ public class Blocks
                 g2.fillRect(x+(3*scale), y, scale, 16*scale);
 
                 g2.setColor(Color.GREEN);
-                g2.fillRect(x+(4*scale), y, 13*scale, 16*scale);
+                g2.fillRect(x+(4*scale), y, 12*scale, 16*scale);
 
-                g2.setColor(new Color(26, 125, 28)); // Darker green.S
+                g2.setColor(new Color(26, 160, 28)); // Darker green.S
                 g2.fillRect(x+(7*scale), y, 2*scale, 16*scale);
-                g2.fillRect(x+(12*scale), y, scale, 16*scale);
-                //g2.fillRect(x+(15*scale), y, scale, 16*scale);
+                g2.fillRect(x+(13*scale), y, scale, 16*scale);
             }
             case Blocks.PIPE_R -> { // Draws the Right side of the Pipe.
                 g2.setColor(Color.BLACK);
-                g2.fillRect(x+(13*scale), y, scale, 16*scale);
+                g2.fillRect(x+(12*scale), y, scale, 16*scale);
 
                 g2.setColor(Color.GREEN);
                 g2.fillRect(x+(7*scale), y, 5*scale, 16*scale);
 
-                g2.setColor(new Color(26, 125, 28));
+                g2.setColor(new Color(26, 60, 28));
                 g2.fillRect(x, y, 7*scale, 16*scale);
                 for(int i = 0; i < 4; i++){
                     for(int j = 0; j < 8; j++)
@@ -237,12 +243,12 @@ public class Blocks
             case Blocks.PIPE_TOP_L -> { // Draws the Left Top side of the Pipe.
                 g2.setColor(Color.BLACK);
                 g2.fillRect(x+(scale), y, 15*scale, 15*scale);
-                g2.fillRect(x+(4*scale), y+(15*scale), 13*scale, scale);
+                g2.fillRect(x+(3*scale), y+(15*scale), 13*scale, scale);
 
                 g2.setColor(Color.GREEN);
                 g2.fillRect(x+(2*scale), y+(scale), 15*scale, 13*scale);
 
-                g2.setColor(new Color(26, 125, 28)); // Darker green.
+                g2.setColor(new Color(26, 160, 28)); // Darker green.
                 g2.fillRect(x+(2*scale), y+(2*scale), 3*scale, scale);
                 g2.fillRect(x+(5*scale), y+(2*scale), 2*scale, 12*scale);
                 g2.fillRect(x+(12*scale), y+(2*scale), scale, 12*scale);
@@ -257,17 +263,22 @@ public class Blocks
                 g2.setColor(Color.GREEN);
                 g2.fillRect(x, y+(scale), 14*scale, 13*scale);
 
-                g2.setColor(new Color(26, 125, 28));
+                g2.setColor(new Color(26, 160, 28));
                 g2.fillRect(x, y+(2*scale), 8*scale, 12*scale);
                 for(int i = 0; i < 5; i++){
                     for(int j = 0; j < 6; j++)
                         g2.fillRect(x+((7+i)*scale), y+(((j*2)+(i%2)+2)*scale), scale, scale);
                 }
             }
+            case Blocks.TRANSPARENT -> {
+                g2.setColor(new Color(255, 255, 255, 10));
+                g2.fillRect(x, y, Blocks.WIDTH, Blocks.HEIGHT);
+            }
+            default -> { // Default (Error) block.
+                g2.setColor(Color.MAGENTA);
+                g2.fillRect(x, y, Blocks.WIDTH, Blocks.HEIGHT);
+            }
         }
-
-
-
 
         if(type.equals("MYSTERY")){ // Draws the "?" (MYSTERY) Block.
             // Proper Orginal Mystery Block graphic.
@@ -361,7 +372,7 @@ public class Blocks
         else if(type.equals("PIPE_TOP_L")){ //Draws a part of the "PIPE".
             g2.setColor(Color.BLACK);
             g2.fillRect(x+(scale), y, 15*scale, 15*scale);
-            g2.fillRect(x+(4*scale), y+(15*scale), 13*scale, scale);
+            g2.fillRect(x+(3*scale), y+(15*scale), 13*scale, scale);
 
             g2.setColor(Color.GREEN);
             g2.fillRect(x+(2*scale), y+(scale), 15*scale, 13*scale);
@@ -393,15 +404,15 @@ public class Blocks
             g2.fillRect(x+(3*scale), y, scale, 16*scale);
 
             g2.setColor(Color.GREEN);
-            g2.fillRect(x+(4*scale), y, 13*scale, 16*scale);
+            g2.fillRect(x+(4*scale), y, 12*scale, 16*scale);
 
             g2.setColor(new Color(26, 160, 28)); // Darker green.S
             g2.fillRect(x+(7*scale), y, 2*scale, 16*scale);
-            g2.fillRect(x+(12*scale), y, scale, 16*scale);
+            g2.fillRect(x+(13*scale), y, scale, 16*scale);
         }
         else if(type.equals("PIPE_R")){ // Draws a part of the "PIPE".
             g2.setColor(Color.BLACK);
-            g2.fillRect(x+(13*scale), y, scale, 16*scale);
+            g2.fillRect(x+(12*scale), y, scale, 16*scale);
 
             g2.setColor(Color.GREEN);
             g2.fillRect(x+(7*scale), y, 5*scale, 16*scale);
@@ -420,7 +431,7 @@ public class Blocks
             g2.fillRect(x, y+(scale), scale, 14*scale);
             g2.fillRect(x+(scale), y+(2*scale), scale, 12*scale);
             g2.fillRect(x+(2*scale), y+(3*scale), scale, 10*scale);
-            g2.fillRect(x+(3*scale), y+(8*scale), scale, 8*scale);
+            g2.fillRect(x+(3*scale), y+(4*scale), scale, 8*scale);
             g2.fillRect(x+(scale), y, 14*scale, scale);
             g2.fillRect(x+(2*scale), y+(scale), 12*scale, scale);
             g2.fillRect(x+(3*scale), y+(2*scale), 10*scale, scale);
