@@ -27,7 +27,7 @@ public class Mario extends Canvas implements Runnable
     InputHandler ih;
     Platform pf;
     Character ch;
-    Items shroom, shroom2;
+    Items shroom, shroom2; // to be phased out.
     ArrayList<Items> items;
     public static double speed = 10, jspeed = 15; // Player movement speeds.
 
@@ -96,6 +96,7 @@ public class Mario extends Canvas implements Runnable
         ih = new InputHandler(frame, this, this);
         pf = new Platform(this);
         ch = new Character(name, 300, 500, this);
+        items = new ArrayList<>();
 
         // New Sound Initialization. Loads the Misc. GameSounds.
         coinSound = GameSound.COIN_SOUND;
@@ -107,8 +108,6 @@ public class Mario extends Canvas implements Runnable
         flagpoleSound = GameSound.FLAGPOLE_SOUND;
         powerUpSound = GameSound.POWERUP_SOUND;
         powerDownSound = GameSound.POWERDOWN_SOUND;
-
-        // Experimental Features.
     }
 
     /**
@@ -130,6 +129,7 @@ public class Mario extends Canvas implements Runnable
         if(ui != null){ ui.tick(); } // User Interface.
         for(Items i : items)         // Items.
             i.tick();
+
 
         if(shroom != null){
             shroom.checkCollision();
@@ -192,16 +192,18 @@ public class Mario extends Canvas implements Runnable
 
         // Draws Game Elements.
         g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
-        if(pf != null) // Draws Platform.
-            pf.render(g);
-        if(ch != null) // Draws the Character.
-            ch.render(g);
-        if(ui != null) // Draws UI Elements.
-            ui.render(g);
+        if(pf != null){ pf.render(g); } // Draws Platform.
+        if(ch != null){ ch.render(g); } // Draws the Character.
+        if(ui != null){ ui.render(g); } // Draws UI Elements.
+
         if(shroom != null) // Draws first Mushroom Item.
             shroom.render(g);
         if(shroom2 != null) // Draws second Mushroom Item.
             shroom2.render(g);
+
+        // Testing Drawing.
+        //Sprites.renderMushroom(50, 50, g);
+        //Sprites.render1Up(100, 50, g);
 
         // Cleanup.
         g.dispose();

@@ -19,7 +19,7 @@ public class Items
     Mario mario;
     private int x, y;
     private boolean used;
-    private String itemType;
+    private final String itemType;
 
     /**
      * Constructor for objects of class Items

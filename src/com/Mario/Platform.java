@@ -10,12 +10,11 @@ import java.util.ArrayList;
  */
 public class Platform
 {
-    Blocks block;
     Mario mario;
     private int x, y, a, b;
     private int flagY;
     private int turn;
-    private static double flagSpeed = 10;
+    private static final double FLAG_SPEED = 10;
     ArrayList<Blocks> blocks;
     ArrayList<Blocks> layerB, layerT, mystery;
 
@@ -230,26 +229,26 @@ public class Platform
         blocks.add(new Blocks("Brick", x + a + 3250, y + 250));
         for(int i = 1; i <= 4; i++){
             for(int j = 0; j < i; j++){
-                blocks.add(new Blocks("Test", x + a + 3550 - (50 * j), y + 400 + (50 * i)));
+                blocks.add(new Blocks("Stone", x + a + 3550 - (50 * j), y + 400 + (50 * i)));
             }
         }
         for(int i = 1; i <= 4; i++){
             for(int j = 0; j < i; j++){
-                blocks.add(new Blocks("Test", x + a + 3700 + (50 * j), y + 400 + (50 * i)));
+                blocks.add(new Blocks("Stone", x + a + 3700 + (50 * j), y + 400 + (50 * i)));
             }
         }
         //add b
         for(int i = 1; i <= 4; i++){
             for(int j = 0; j < i; j++){
-                blocks.add(new Blocks("Test", x + b + 500 - (50 * j), y + 400 + (50 * i)));
+                blocks.add(new Blocks("Stone", x + b + 500 - (50 * j), y + 400 + (50 * i)));
             }
         }
         for(int n = 0; n < 4; n++){
-            blocks.add(new Blocks("Test", x + b + 550, y + 450 + (50 * n)));
+            blocks.add(new Blocks("Stone", x + b + 550, y + 450 + (50 * n)));
         }
         for(int i = 1; i <= 4; i++){
             for(int j = 0; j < i; j++){
-                blocks.add(new Blocks("Test", x + b + 700 + (50 * j), y + 400 + (50 * i)));
+                blocks.add(new Blocks("Stone", x + b + 700 + (50 * j), y + 400 + (50 * i)));
             }
         }
         blocks.add(new Blocks("Pipe_top_l", x + b + 1100, y + 550));
@@ -268,13 +267,13 @@ public class Platform
         blocks.add(new Blocks("Pipe_r", x + b + 2000, y + 600));
         for(int i = 1; i <= 8; i++){
             for(int j = 0; j < i; j++){
-                blocks.add(new Blocks("Test", x + b + 2400 - (50 * j), y + 200 + (50 * i)));
+                blocks.add(new Blocks("Stone", x + b + 2400 - (50 * j), y + 200 + (50 * i)));
             }
         }
         for(int n = 0; n < 8; n++){
-            blocks.add(new Blocks("Test", x + b + 2450, y + 250 + (50 * n)));
+            blocks.add(new Blocks("Stone", x + b + 2450, y + 250 + (50 * n)));
         }
-        blocks.add(new Blocks("Test", x + b + 2900, y + 600));
+        blocks.add(new Blocks("Stone", x + b + 2900, y + 600));
     }
 
     public void sort()
@@ -282,11 +281,11 @@ public class Platform
         for(Blocks block : blocks){
             if(block.getType().equals("MYSTERY"))
                 mystery.add(block);
-            if(block.getY() < y + 350 && !block.getType().equals("TEST"))
+            if(block.getY() < y + 350 && !block.getType().equals("Stone"))
                 layerT.add(block);
             else if(block.getY() < y + 500){
                 String test = block.getType();
-                if(!test.equals("TEST")&&!test.equals("PIPE_TOP_L")&&!test.equals("PIPE_TOP_R"))
+                if(!test.equals("Stone")&&!test.equals("PIPE_TOP_L")&&!test.equals("PIPE_TOP_R"))
                     layerB.add(block);
             }
         }
@@ -332,15 +331,15 @@ public class Platform
         if(!mario.finish){
             // When the Player pressed LEFT or A.
             if(mario.left && x < 0)
-                x += mario.speed; // Stage moves Left (Actually right).
+                x += Mario.speed; // Stage moves Left (Actually right).
             // When the Player presses RIGHT or D.
             if(mario.right)
-                x -= mario.speed; // Stage moves Right (Actually left).
+                x -= Mario.speed; // Stage moves Right (Actually left).
         }
 
         // Lowers Flag on ending.
         if(mario.finish && flagY < y + 550)
-            flagY += Platform.flagSpeed;
+            flagY += Platform.FLAG_SPEED;
     }
 }
 

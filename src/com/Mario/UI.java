@@ -70,16 +70,18 @@ public class UI
             g2.drawString(mario.pf.getX() + " " + mario.ch.getY(), 30, 30);
             g2.drawString(mario.timer + "", 30, 60);
         }
-
-        g2.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
-
+        // Draws End/Death screen.
         if(mario.finish || mario.died || mario.gameover){
+            g2.setFont(new Font(Font.MONOSPACED, Font.BOLD, 30));
+            // Fades out.
             g2.setColor(fade);
             g2.fillRect(0, 0, mario.getWidth(), mario.getHeight());
+            // Death screen.
             if(mario.died && a >= 255 && !mario.gameover){
                 g2.setColor(Color.WHITE);
                 g2.drawString("X" + mario.lives, mario.getWidth()/2, mario.getHeight()/2);
             }
+            // "Gameover" Screen.
             if(mario.gameover && a >= 255){
                 g2.setColor(Color.WHITE);
                 g2.setFont(new Font(Font.MONOSPACED, Font.BOLD, 45));
