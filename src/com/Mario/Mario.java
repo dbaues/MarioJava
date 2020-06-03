@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Main Game Class.
@@ -26,71 +27,59 @@ public class Mario extends Canvas implements Runnable
     InputHandler ih;
     Platform pf;
     Character ch;
-    Items shroom, shroom2;
+    Items shroom, shroom2; // to be phased out.
+    ArrayList<Items> items;
     public static double speed = 10, jspeed = 15; // Player movement speeds.
-    private double FPS, UPS, frames, ticks, delta;
-    private boolean shouldRender;
 
     // Game Fields.
     public int score, coins, lives = 4;
     public String name;
     public boolean jump, moving, finish, gameover, scroll = true;
     public long timer, startTime;
-    public Enemy[] enemy;
-    private Enemy testGoomba, testKoopa;
     public boolean died;
     private int obsolete = 0, obsolete2 = 0, tickTimer = 0;
     private boolean bandaid = false;
 
-    // Sound Fields.
-    private GameSound coinSound, deathSound, gameoverSound, endSound, mainSound;
-    private GameSound jumpSound, flagpoleSound, powerUpSound, powerDownSound;
+    public boolean debuggingMode = false;
 
-    /** Run method to control framerate.
-     *  Main Game Thread.
+    // Sound Fields.
+    private final GameSound coinSound, deathSound, gameoverSound, endSound, mainSound;
+    private final GameSound jumpSound, flagpoleSound, powerUpSound, powerDownSound;
+
+    /**
+     * Run method to control frame rate.
+     * Main Game Thread.
      */
     public void run()
     {
+        boolean shouldRender;
         long lastTime = System.nanoTime();
         double nsPerTick = 1000000000D / 60D;
-        //long lastTimer = System.currentTimeMillis();
-        delta = 0D;
+        double delta = 0D;
 
+        // Main Game Thread Loop.
         while(running) {
             long now = System.nanoTime();
             delta += (now - lastTime) / nsPerTick;
             lastTime = now;
-
             shouldRender = false;
 
             while(delta >= 1) {
-                ticks++;
                 tick();
                 delta--;
                 shouldRender = true;
             }
-            if(shouldRender){
-                frames++;
-                render();
-            }
-
-            if(System.currentTimeMillis() - lastTime >= 1000){
-                //lastTimer += 1000;
-                FPS = frames;
-                UPS = ticks;
-                frames = 0;
-                ticks = 0;
-            }
+            if(shouldRender){ render(); }
         }
     }
 
-    /** Constructor
-     *  Initializes Objects of the Game.
+    /**
+     * Constructor
+     * Initializes Objects of the Game.
      */
     public Mario(String name)
     {
         createWindow();
-
         if(name.equals("Alt"))
             this.name = "Alternate";
         else
@@ -107,26 +96,23 @@ public class Mario extends Canvas implements Runnable
         ih = new InputHandler(frame, this, this);
         pf = new Platform(this);
         ch = new Character(name, 300, 500, this);
-        enemy = new Enemy[13];
+        items = new ArrayList<>();
 
         // New Sound Initialization. Loads the Misc. GameSounds.
-        coinSound = new GameSound(GameSound.COIN_SOUND_URL);
-        deathSound = new GameSound(GameSound.DEATH_SOUND_URL);
-        gameoverSound = new GameSound(GameSound.GAMEOVER_SOUND_URL);
-        endSound = new GameSound(GameSound.END_SOUND_URL);
-        mainSound = new GameSound(GameSound.MAIN_SOUND_URL);
-        jumpSound = new GameSound(GameSound.JUMP_SOUND_URL);
-        flagpoleSound = new GameSound(GameSound.FLAGPOLE_SOUND_URL);
-        powerUpSound = new GameSound(GameSound.POWERUP_SOUND_URL);
-        powerDownSound = new GameSound(GameSound.POWERDOWN_SOUND_URL);
-
-        // Experimental Features.
-        //testGoomba = new Enemy("Goomba", pf.getX() + 800, pf.getY() + 600, this);
-        //testGoomba.setBounds(pf.getX() + 200, pf.getX() + 400);
+        coinSound = GameSound.COIN_SOUND;
+        deathSound = GameSound.DEATH_SOUND;
+        gameoverSound = GameSound.GAMEOVER_SOUND;
+        endSound = GameSound.END_SOUND;
+        mainSound = GameSound.MAIN_SOUND;
+        jumpSound = GameSound.JUMP_SOUND;
+        flagpoleSound = GameSound.FLAGPOLE_SOUND;
+        powerUpSound = GameSound.POWERUP_SOUND;
+        powerDownSound = GameSound.POWERDOWN_SOUND;
     }
 
-    /** Tick method, does this method every frame.
-     *  Controls motion and Collision Checks.
+    /**
+     * Tick method, Executes every frame.
+     * Controls motion and Collision Checks.
      */
     public void tick()
     {
@@ -135,16 +121,16 @@ public class Mario extends Canvas implements Runnable
             tickTimer++;
             if(tickTimer == 1 && !bandaid){
                 bandaid = true;
-                playSound(GameSound.MAIN_SOUND);
+                playSound(GameSound.MAIN_SOUND_ID);
             }
         }
-        if(pf != null){
-            pf.checkCollision();
-            pf.tick();
-        }
-        if(ch != null){
-            ch.checkCollision();
-        }
+        if(pf != null){ pf.tick(); } // Platform.
+        if(ch != null){ ch.tick(); } // Character.
+        if(ui != null){ ui.tick(); } // User Interface.
+        for(Items i : items)         // Items.
+            i.tick();
+
+
         if(shroom != null){
             shroom.checkCollision();
             shroom.tick();
@@ -153,29 +139,17 @@ public class Mario extends Canvas implements Runnable
             shroom2.checkCollision();
             shroom2.tick();
         }
-        if(ui != null)
-            ui.tick();
-        if(testGoomba != null){
-            testGoomba.checkCollision();
-            testGoomba.tick();
-        }
-        if(ch != null){
-            ch.tick();
-        }
         if(lives >= 0) {
             if(died && ui.getA() >= 255){
                 obsolete++;
                 if(obsolete == 1){
                     lives--;
-                    playSound(GameSound.DEATH_SOUND);
+                    playSound(GameSound.DEATH_SOUND_ID);
                     mainSound.stop();   // Stops Main Soundtrack in event of Death.
                 }
                 else if(obsolete == 183){
                     ch.setLocation(300, 500);
-                    //clipMain.setMicrosecondPosition(1610000);
-                    //clipDeath.stop();
-                    //clipDeath.setMicrosecondPosition(0);
-                    playSound(GameSound.MAIN_SOUND);
+                    playSound(GameSound.MAIN_SOUND_ID);
                     died = false;
                     obsolete = 0;
                     ui.setA(0);
@@ -194,45 +168,44 @@ public class Mario extends Canvas implements Runnable
                 deathSound.stop();  // Stops Death sound. (In event of GameOver).
 
                 if(finish){
-                    playSound(GameSound.FLAGPOLE_SOUND);
-                    playSound(GameSound.END_SOUND);
+                    playSound(GameSound.FLAGPOLE_SOUND_ID);
+                    playSound(GameSound.END_SOUND_ID);
                     score += timer * 10;
                 }
                 else if(gameover)
-                    playSound(GameSound.GAMEOVER_SOUND);
+                    playSound(GameSound.GAMEOVER_SOUND_ID);
             }
         }
     }
 
     /**
      * Render method, creates the board with ball, players, and background
-     *  Draws the objects of the Game.
-     *  Theoretical 60 frames per second.
+     * Draws the objects of the Game.
+     * Theoretical 60 frames per second.
      */
     public void render()
     {
+        // Couldn't tell you what these three do XD.
         BufferStrategy strat = getBufferStrategy();
-        if(strat == null){
-            createBufferStrategy(3);
-            return;
-        }
+        if(strat == null){ createBufferStrategy(3); return; }
         Graphics g = strat.getDrawGraphics();
 
+        // Draws Game Elements.
         g.drawImage(img, 0, 0, getWidth(), getHeight(), this);
-        if(pf != null)
-            pf.renderBack(g);
-        if(pf != null)
-            pf.render(g);
-        if(ch != null)
-            ch.render(g);
-        if(ui != null)
-            ui.render(g);
-        if(shroom != null)
+        if(pf != null){ pf.render(g); } // Draws Platform.
+        if(ch != null){ ch.render(g); } // Draws the Character.
+        if(ui != null){ ui.render(g); } // Draws UI Elements.
+
+        if(shroom != null) // Draws first Mushroom Item.
             shroom.render(g);
-        if(shroom2 != null)
+        if(shroom2 != null) // Draws second Mushroom Item.
             shroom2.render(g);
-        if(testGoomba != null)
-            testGoomba.render(g);
+
+        // Testing Drawing.
+        //Sprites.renderMushroom(50, 50, g);
+        //Sprites.render1Up(100, 50, g);
+
+        // Cleanup.
         g.dispose();
         strat.show();
     }
@@ -273,16 +246,15 @@ public class Mario extends Canvas implements Runnable
     public void playSound(int soundID)
     {
         switch (soundID){
-            case GameSound.COIN_SOUND: coinSound.play(); break;
-            case GameSound.DEATH_SOUND: deathSound.play(); break;
-            case GameSound.GAMEOVER_SOUND: gameoverSound.play(); break;
-            case GameSound.END_SOUND: endSound.play(); break;
-            case GameSound.MAIN_SOUND: mainSound.play(); break;
-            case GameSound.JUMP_SOUND: jumpSound.play(); break;
-            case GameSound.FLAGPOLE_SOUND: flagpoleSound.play(); break;
-            case GameSound.POWERUP_SOUND: powerUpSound.play(); break;
-            case GameSound.POWERDOWN_SOUND: powerDownSound.play(); break;
-            default: return;
+            case GameSound.COIN_SOUND_ID -> coinSound.play();
+            case GameSound.DEATH_SOUND_ID -> deathSound.play();
+            case GameSound.GAMEOVER_SOUND_ID -> gameoverSound.play();
+            case GameSound.END_SOUND_ID -> endSound.play();
+            case GameSound.MAIN_SOUND_ID -> mainSound.play();
+            case GameSound.JUMP_SOUND_ID -> jumpSound.play();
+            case GameSound.FLAGPOLE_SOUND_ID -> flagpoleSound.play();
+            case GameSound.POWERUP_SOUND_ID -> powerUpSound.play();
+            case GameSound.POWERDOWN_SOUND_ID -> powerDownSound.play();
         }
     }
 }

@@ -10,6 +10,8 @@ import java.awt.*;
 
 public class Sprites
 {
+    private static final int SCALE = 3;
+
     public static void renderAlt(int x, int y, boolean big, Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
@@ -112,11 +114,99 @@ public class Sprites
         }*/
     }
 
+    /**
+     * Renders Default Item.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param g Graphics instance.
+     */
+    public static void renderDefaultItem(int x, int y, Graphics g)
+    {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.BLACK);
+        g2.fillRect(x, y, 40, 40);
+    }
+
+    /**
+     * Renders Mushroom Item.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param g Graphics Instance.
+     */
     public static void renderMushroom(int x, int y, Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
+        // Draws Red Mushroom.
+        Sprites.renderMushroom(x, y, g2, Color.RED);
+    }
+
+    /**
+     * Renders 1-Up Mushroom Item.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param g Graphics Instance.
+     */
+    public static void render1Up(int x, int y, Graphics g)
+    {
+        Graphics2D g2 = (Graphics2D) g;
+        // Draws Green Mushroom.
+        Sprites.renderMushroom(x, y, g2, new Color(68, 168, 50));
+    }
+
+    /**
+     * Renders a colored Mushroom Item.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param g2 Graphics object.
+     * @param color The Color of the Mushroom.
+     *              (Red for Power up).
+     *              (Green for 1-Up).
+     */
+    private static void renderMushroom(int x, int y, Graphics2D g2, Color color)
+    {
+        int scale = Sprites.SCALE;
+
+        g2.setColor(Color.WHITE);
+        g2.fillRect(x+(5*scale), y+(11*scale), 6*scale, 5*scale);
+        g2.fillRect(x+(4*scale), y+(12*scale), 8*scale, 3*scale);
+
         g2.setColor(Color.ORANGE);
-        g2.fillRect(x, y, 40, 40);
+        g2.fillRect(x+(6*scale), y, 4*scale, 1*scale);
+        g2.fillRect(x+(5*scale), y+(1*scale), 4*scale, 1*scale);
+        g2.fillRect(x+(4*scale), y+(2*scale), 4*scale, 1*scale);
+        g2.fillRect(x+(3*scale), y+(3*scale), 5*scale, 1*scale);
+        g2.fillRect(x+(2*scale), y+(4*scale), 12*scale, 1*scale);
+        g2.fillRect(x+(1*scale), y+(5*scale), 14*scale, 2*scale);
+        g2.fillRect(x, y+(7*scale), 16*scale, 4*scale);
+        g2.fillRect(x+(1*scale), y+(11*scale), 1*scale, 1*scale);
+        g2.fillRect(x+(14*scale), y+(11*scale), 1*scale, 1*scale);
+        g2.fillRect(x+(10*scale), y+(13*scale), 1*scale, 2*scale);
+        g2.fillRect(x+(9*scale), y+(15*scale), 1*scale, 1*scale);
+
+        g2.setColor(color);
+        g2.fillRect(x+(9*scale), y+(1*scale), 2*scale, 1*scale);
+        g2.fillRect(x+(8*scale), y+(2*scale), 4*scale, 1*scale);
+        g2.fillRect(x+(8*scale), y+(3*scale), 5*scale, 1*scale);
+        g2.fillRect(x+(9*scale), y+(4*scale), 4*scale, 1*scale);
+        g2.fillRect(x+(3*scale), y+(5*scale), 3*scale, 5*scale);
+        g2.fillRect(x+(2*scale), y+(6*scale), 5*scale, 3*scale);
+        g2.fillRect(x+(12*scale), y+(7*scale), 2*scale, 2*scale);
+        g2.fillRect(x+(13*scale), y+(8*scale), 2*scale, 2*scale);
+        g2.fillRect(x+(2*scale), y+(11*scale), 3*scale, 1*scale);
+        g2.fillRect(x+(11*scale), y+(11*scale), 3*scale, 1*scale);
+    }
+
+    /**
+     * Renders Fire Flower Item.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param g Graphics Instance.
+     */
+    public static void renderFireFlower(int x, int y, Graphics g)
+    {
+        Graphics2D g2 = (Graphics2D) g;
+
+        Sprites.renderDefaultItem(x, y, g);
     }
 
     public static void renderGoomba(int x, int y, Graphics g)

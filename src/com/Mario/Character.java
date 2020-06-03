@@ -14,21 +14,21 @@ import java.awt.geom.*;
 public class Character
 {
     Mario mario;
-    private int x, y;
-    private int bottom, gone;
-    private int distance;
     public boolean big;
+    private int x, y;   // Player Coordinates.
+    private int bottom, gone, distance, dif, obsolete = 15;
     private int a, b;
-    private int obsolete = 15;
-    private String type;
-    private int width;
-    private int dif;
-    //Platform pf;
+    private String name;
 
     /**
-     * Constructor for objects of class Character
+     * Constructor for objects of class Character.
+     * @param name String of Player.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param m Main Game instance.
+     *          Allows access to attributes of M.
      */
-    public Character(String type, int x, int y, Mario m)
+    public Character(String name, int x, int y, Mario m)
     {
         mario = m;
         this.x = x;
@@ -38,13 +38,15 @@ public class Character
         a = 3250;
         b = a + 3750;
         distance = 215;
-        this.type = type;
+        this.name = name;
         //pf = mario.pf;
     }
 
     /**
-     * resets the stage after death
-     * @param x and y coordinates
+     * Resets the Character location.
+     * Resets the stage after death.
+     * @param x Coordinate.
+     * @param y Coordinate.
      */
     public void setLocation(int x, int y)
     {
@@ -54,10 +56,21 @@ public class Character
     }
 
     /**
-     * Does this every frame
+     * Executes on every "Tick"
      */
     public void tick()
     {
+        // Checks Player Collisions.
+        this.checkCollision();
+
+        // Basic UP/DOWN motions.
+        if(mario.up){ y-= mario.speed; }
+        if(mario.down){ y += mario.speed; }
+
+        // Previous Code.
+        //if(mario.left){ x -= mario.speed; }
+        //if(mario.right){ x += mario.speed; }
+        /*
         //checkCollision();
         if(mario.jump){
             if(mario.up){ // if player presses the up arrow
@@ -76,6 +89,7 @@ public class Character
             else
                 obsolete = 15;
         }
+        */
         /*if(mario.down && big) // if player presses the down arrow
         //big = false; //player ducks
         else if(big)
@@ -85,7 +99,8 @@ public class Character
     }
 
     /**
-     * @return x cordinate
+     * Gets the Players X Coordinate.
+     * @return x Coordinate.
      */
     public int getX()
     {
@@ -93,7 +108,8 @@ public class Character
     }
 
     /**
-     * @return y cordinate
+     * Gets the Players Y Coordinate.
+     * @return y Coordinate.
      */
     public int getY()
     {
@@ -101,14 +117,15 @@ public class Character
     }
 
     /**
-     * draws chracter
-     * uses Sprites static renders
+     * Draws the Character.
+     * Uses Sprites static renders.
+     * @param g Graphics object.
      */
     public void render(Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
         g2.setColor(Color.RED);
-        if(mario.name.toUpperCase().equals("ALTERNATE"))
+        if(this.name.toUpperCase().equals("ALTERNATE"))
             Sprites.renderAlt(x, y, big, g);
         else{
             Sprites.renderMario(x, y, big, "IDK YET", g);
@@ -116,10 +133,19 @@ public class Character
     }
 
     /**
+     * New Player Collision Check.
+     */
+    public void checkCollision()
+    {
+
+    }
+
+    /**
+     * [OUTDATED]
      * collision tests for the character
      * 300 or so lines to check every platform collision
      */
-    public void checkCollision()
+    public void checkCollision(boolean preventBeingUsed)
     {
         int pfX = mario.pf.getX();
         int pfY = mario.pf.getY();
@@ -638,7 +664,7 @@ public class Character
     }
 
     /**
-     * character gravity of sorts
+     * Gravity function of sorts.
      * @param stop Integer of when to stop falling.
      */
     public void fall(int stop)
@@ -661,6 +687,3 @@ public class Character
         }
     }
 }
-
-
-

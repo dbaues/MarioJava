@@ -10,19 +10,27 @@ import java.awt.*;
  */
 public class Items
 {
+    // Static Type strings.
+    public static final String MUSHROOM = "Mushroom";
+    public static final String FIRE_FLOWER = "Fire Flower";
+    public static final String _1UP = "1-Up";
+
+    // Class Fields.
     Mario mario;
     private int x, y;
     private boolean used;
+    private final String itemType;
 
     /**
      * Constructor for objects of class Items
      */
-    public Items(int x, int y, Mario m)
+    public Items(int x, int y, String type, Mario m)
     {
-        mario = m;
-        this.x = x;
-        this.y = y;
-        used = false;
+        this.mario = m; // Main Game instance.
+        this.x = x; // X Coordinates.
+        this.y = y; // Y Coordinates.
+        this.itemType = type; // Item type (Mushroom, 1UP, Flowers).
+        this.used = false; // Determines whether an Item has been used.
     }
 
     /**
@@ -45,13 +53,10 @@ public class Items
             int chX = mario.ch.getX();  // Gets the players coordinates.
             int chY = mario.ch.getY();
 
-            Rectangle bounds = new Rectangle(x, y, 90, 50);
-            if(bounds.contains(chX, chY)){  // Checks to see if Player has entered the Item Hit box.
-                mario.ch.big = true;
-                used = true;
-                mario.playSound(GameSound.POWERUP_SOUND);
-                mario.score += 1000;
-            }
+            // Checks to see if Player has entered the Item Hit box.
+            Rectangle bounds = new Rectangle(x, y, 90, 50); // Item Hit Box.
+            if(bounds.contains(chX, chY))
+                action();
         }
     }
 
@@ -61,9 +66,28 @@ public class Items
      */
     public void render(Graphics g)
     {
-        //Graphics2D g2 = (Graphics2D) g;
-        if(!used)   // If this Item has not been used previously.
-            Sprites.renderMushroom(x, y, g);
+        if(!used) { // If this Item has not been used previously.
+            switch (itemType) {
+                case Items.MUSHROOM -> Sprites.renderMushroom(x, y, g);
+                case Items.FIRE_FLOWER -> Sprites.renderFireFlower(x, y, g);
+                case Items._1UP -> Sprites.render1Up(x, y, g);
+                default -> Sprites.renderDefaultItem(x, y, g);
+            }
+        }
+    }
+
+    /**
+     * Performs the Items action when Player hits it.
+     */
+    private void action()
+    {
+        used = true;
+        mario.playSound(GameSound.POWERUP_SOUND_ID);
+        mario.score += 1000;
+        switch (itemType) {
+            case Items.MUSHROOM -> mario.ch.big = true;
+            case Items.FIRE_FLOWER -> mario.ch.big = false; // Add Implementation Later.
+            case Items._1UP -> mario.lives++;
+        }
     }
 }
-
