@@ -18,7 +18,7 @@ public class Mario extends Canvas implements Runnable
     public boolean up, down, left, right; // player movement
     //public static boolean go; //start motion
     //public boolean motion = true;
-    public static final int width = 1035, height = 715; // JFrame dimensions
+    public static final int width = 1035, height = 15 * Block.HEIGHT - 11; // JFrame dimensions
     BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     Dimension dim = new Dimension(width, height);
     Thread gameThread;

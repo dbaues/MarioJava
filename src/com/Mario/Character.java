@@ -537,7 +537,7 @@ public class Character
                 }
             }
         }
-
+        /*
         if(y > pfY + 500){ // bottom collision tests
             if(x > pfX + 660 && x < pfX + 750){
                 if(y <= pfY + 540 + dif){
@@ -661,6 +661,8 @@ public class Character
             //Finish game
             mario.finish = true;
         }
+
+         */
     }
 
     /**

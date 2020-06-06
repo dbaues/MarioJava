@@ -171,29 +171,29 @@ public class Sprites
         g2.fillRect(x+(4*scale), y+(12*scale), 8*scale, 3*scale);
 
         g2.setColor(Color.ORANGE);
-        g2.fillRect(x+(6*scale), y, 4*scale, 1*scale);
-        g2.fillRect(x+(5*scale), y+(1*scale), 4*scale, 1*scale);
-        g2.fillRect(x+(4*scale), y+(2*scale), 4*scale, 1*scale);
-        g2.fillRect(x+(3*scale), y+(3*scale), 5*scale, 1*scale);
-        g2.fillRect(x+(2*scale), y+(4*scale), 12*scale, 1*scale);
-        g2.fillRect(x+(1*scale), y+(5*scale), 14*scale, 2*scale);
+        g2.fillRect(x+(6*scale), y, 4*scale, scale);
+        g2.fillRect(x+(5*scale), y+(scale), 4*scale, scale);
+        g2.fillRect(x+(4*scale), y+(2*scale), 4*scale, scale);
+        g2.fillRect(x+(3*scale), y+(3*scale), 5*scale, scale);
+        g2.fillRect(x+(2*scale), y+(4*scale), 12*scale, scale);
+        g2.fillRect(x+(scale), y+(5*scale), 14*scale, 2*scale);
         g2.fillRect(x, y+(7*scale), 16*scale, 4*scale);
-        g2.fillRect(x+(1*scale), y+(11*scale), 1*scale, 1*scale);
-        g2.fillRect(x+(14*scale), y+(11*scale), 1*scale, 1*scale);
-        g2.fillRect(x+(10*scale), y+(13*scale), 1*scale, 2*scale);
-        g2.fillRect(x+(9*scale), y+(15*scale), 1*scale, 1*scale);
+        g2.fillRect(x+(scale), y+(11*scale), scale, scale);
+        g2.fillRect(x+(14*scale), y+(11*scale), scale, scale);
+        g2.fillRect(x+(10*scale), y+(13*scale), scale, 2*scale);
+        g2.fillRect(x+(9*scale), y+(15*scale), scale, scale);
 
         g2.setColor(color);
-        g2.fillRect(x+(9*scale), y+(1*scale), 2*scale, 1*scale);
-        g2.fillRect(x+(8*scale), y+(2*scale), 4*scale, 1*scale);
-        g2.fillRect(x+(8*scale), y+(3*scale), 5*scale, 1*scale);
-        g2.fillRect(x+(9*scale), y+(4*scale), 4*scale, 1*scale);
+        g2.fillRect(x+(9*scale), y+(scale), 2*scale, scale);
+        g2.fillRect(x+(8*scale), y+(2*scale), 4*scale, scale);
+        g2.fillRect(x+(8*scale), y+(3*scale), 5*scale, scale);
+        g2.fillRect(x+(9*scale), y+(4*scale), 4*scale, scale);
         g2.fillRect(x+(3*scale), y+(5*scale), 3*scale, 5*scale);
         g2.fillRect(x+(2*scale), y+(6*scale), 5*scale, 3*scale);
         g2.fillRect(x+(12*scale), y+(7*scale), 2*scale, 2*scale);
         g2.fillRect(x+(13*scale), y+(8*scale), 2*scale, 2*scale);
-        g2.fillRect(x+(2*scale), y+(11*scale), 3*scale, 1*scale);
-        g2.fillRect(x+(11*scale), y+(11*scale), 3*scale, 1*scale);
+        g2.fillRect(x+(2*scale), y+(11*scale), 3*scale, scale);
+        g2.fillRect(x+(11*scale), y+(11*scale), 3*scale, scale);
     }
 
     /**
@@ -204,7 +204,7 @@ public class Sprites
      */
     public static void renderFireFlower(int x, int y, Graphics g)
     {
-        Graphics2D g2 = (Graphics2D) g;
+        //Graphics2D g2 = (Graphics2D) g;
 
         Sprites.renderDefaultItem(x, y, g);
     }
