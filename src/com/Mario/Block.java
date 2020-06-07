@@ -20,10 +20,11 @@ public class Block
     public static final int GROUND = 2;
     public static final int BLOCK = 3;
     public static final int STONE = 4;
-    public static final int PIPE_L = 5;
-    public static final int PIPE_R = 6;
-    public static final int PIPE_TOP_L = 7;
-    public static final int PIPE_TOP_R = 8;
+    public static final int PIPE_TOP_L = 5;
+    public static final int PIPE_TOP_R = 6;
+    public static final int PIPE_L = 7;
+    public static final int PIPE_R = 8;
+
     // Mystery Block Types.
     public static final int MYSTERY_MUSHROOM = 11;
     public static final int MYSTERY_1UP = 12;
@@ -34,6 +35,8 @@ public class Block
     public static final int BRICK_COINS = 22;
     public static final int BRICK_STAR = 23;
     // Special Block Types.
+    public static final int WARP_PIPE_L = 61;
+    public static final int WARP_PIPE_R = 71;
     public static final int FLAGPOLE = 97;
     public static final int TRANSPARENT = 98;
     //public static final int TEST = 99;
@@ -116,7 +119,7 @@ public class Block
         int scale = Block.SCALE;
         int tmpID = typeID;
 
-        if(tmpID >= 10 && tmpID < 20)
+        if(tmpID >= 10 && tmpID < 90)
             tmpID = (tmpID / 10) - 1;
 
         // Draws an Individual Block.
@@ -318,22 +321,49 @@ public class Block
 
     /**
      * Checks the Collision with each individual Block.
+     * A good 580 lines shorter and more Efficient than Original.
      * @param px Coordinate (Player X Coordinate).
      * @param py Coordinate (Player Y Coordinate).
      */
     public void checkCollision(int px, int py)
     {
-        Rectangle bounds = new Rectangle(x - 48, y - 48, Block.WIDTH + 48, Block.HEIGHT + 48);
-        if(bounds.contains(px, py)) { action(); }
+        // Gives a Margin for Error on collisions.
+        int margin = 8;
 
-        /*
-        if(px > x - 40 && px < x + 50){
-            if(py > y + 20 && py <= y + 50){
-                action();
+        // Top and Bottom Checks.
+        if(px > x-Block.WIDTH+margin && px <= x+Block.WIDTH-margin){
+            // Checks for Top Collisions. Doesn't check on Transparent Blocks.
+            if ((typeID != Block.TRANSPARENT) && (py >= y-Block.HEIGHT) && (py < y)) {
+                // Halts Downwards motion.
+                 mario.down = false;
+                 mario.ch.setLocation(px,y-Character.HEIGHT);
+            }
+            // Checks for Bottom Collisions. Doesn't check on Ground Blocks.
+            if((typeID != Block.GROUND) && (py > y) && (py <= y+Block.HEIGHT)) {
+                // Halts Upwards motion.
+                mario.up = false;
+                mario.ch.setLocation(px,y+Character.HEIGHT);
+                // Checks if the Player has at least 50% contact with the block to register the action.
+                if(px >= x-(Block.WIDTH/2) && px <= x+(Block.WIDTH/2)){ this.action(); }
             }
         }
 
-         */
+        // Left and Right Checks.
+        // Only checks blocks Near the player. Doesn't check on Transparent Blocks.
+        if (typeID != Block.TRANSPARENT && px > x-(3*Block.WIDTH) && px < x+(4*Block.WIDTH)){
+            if (py > y-Block.HEIGHT+(margin*2) && py < y+(Block.HEIGHT-margin)){
+                // Checks for Left Collisions.
+                if (px > x-Block.WIDTH-margin && px <= x){
+                    mario.right = false;
+                    //mario.ch.setLocation(x-Character.WIDTH, py);
+                }
+                // CHecks for Right Collisions.
+                if (px > x && px <= x+Block.WIDTH){
+                    mario.left = false;
+                    //mario.ch.setLocation(x+Character.WIDTH, py);
+                }
+            }
+        }
 
         // Collision Check for Spawned Item.
         if(item != null)
@@ -346,15 +376,20 @@ public class Block
      * @param y Coordinate.
      * @param height The Height of the Pipe (h >= 1).
      * @param entrance Determines if this is a Warp Pipe.
-     *                 Add implementation.
      * @return An Array of Block containing Pipe Block.
      */
     public static Block[] addPipe(int x, int y, int height, boolean entrance, Mario m)
     {
         Block[] pipe = new Block[height * 2];
         // Top of Pipe. Necessary for all Above Ground Pipes.
-        pipe[0] = new Block(Block.PIPE_TOP_L, x, y, m);
-        pipe[1] = new Block(Block.PIPE_TOP_R, x+(Block.WIDTH), y, m);
+        if(entrance) {
+            pipe[0] = new Block(Block.WARP_PIPE_L, x, y, m);
+            pipe[1] = new Block(Block.WARP_PIPE_R, x + (Block.WIDTH), y, m);
+        }
+        else{
+            pipe[0] = new Block(Block.PIPE_TOP_L, x, y, m);
+            pipe[1] = new Block(Block.PIPE_TOP_R, x + (Block.WIDTH), y, m);
+        }
         // Adds rest of Pipe.
         for(int i = 2; i < height * 2; i += 2)
         {
@@ -363,6 +398,4 @@ public class Block
         }
         return pipe;
     }
-
 }
-
