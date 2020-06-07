@@ -152,30 +152,30 @@ public class Platform
             Blocks.add(new Block(Block.BRICK, x+((80+i)*Block.WIDTH), y+(blockHeight2), mario));
 
         for(i = 0; i < 3; i++)
-            Blocks.add(new Block(Block.BRICK, x+((90+i)*Block.WIDTH), y+(blockHeight2), mario));
-        Blocks.add(new Block(Block.MYSTERY, x+(93*Block.WIDTH), y+(blockHeight2), mario));
-        Blocks.add(new Block(Block.BRICK_COIN, x+(93*Block.WIDTH), y+(blockHeight1), mario));
+            Blocks.add(new Block(Block.BRICK, x+((91+i)*Block.WIDTH), y+(blockHeight2), mario));
+        Blocks.add(new Block(Block.MYSTERY, x+(94*Block.WIDTH), y+(blockHeight2), mario));
+        Blocks.add(new Block(Block.BRICK_COIN, x+(94*Block.WIDTH), y+(blockHeight1), mario));
 
-        Blocks.add(new Block(Block.BRICK, x+(99*Block.WIDTH), y+(blockHeight1), mario));
-        Blocks.add(new Block(Block.BRICK_STAR, x+(100*Block.WIDTH), y+(blockHeight1), mario));
+        Blocks.add(new Block(Block.BRICK, x+(100*Block.WIDTH), y+(blockHeight1), mario));
+        Blocks.add(new Block(Block.BRICK_STAR, x+(101*Block.WIDTH), y+(blockHeight1), mario));
 
         // Set of 4 Mystery Boxes.
-        Blocks.add(new Block(Block.MYSTERY, x+(105*Block.WIDTH), y+(blockHeight1), mario));
-        Blocks.add(new Block(Block.MYSTERY, x+(108*Block.WIDTH), y+(blockHeight1), mario));
-        Blocks.add(new Block(Block.MYSTERY_MUSHROOM, x+(108*Block.WIDTH), y+(blockHeight2), mario));
-        Blocks.add(new Block(Block.MYSTERY, x+(111*Block.WIDTH), y+(blockHeight1), mario));
+        Blocks.add(new Block(Block.MYSTERY, x+(106*Block.WIDTH), y+(blockHeight1), mario));
+        Blocks.add(new Block(Block.MYSTERY, x+(109*Block.WIDTH), y+(blockHeight1), mario));
+        Blocks.add(new Block(Block.MYSTERY_MUSHROOM, x+(109*Block.WIDTH), y+(blockHeight2), mario));
+        Blocks.add(new Block(Block.MYSTERY, x+(112*Block.WIDTH), y+(blockHeight1), mario));
 
         // Next Groupings of Bricks and Mystery Boxes.
-        Blocks.add(new Block(Block.BRICK, x+(117*Block.WIDTH), y+(blockHeight1), mario));
+        Blocks.add(new Block(Block.BRICK, x+(118*Block.WIDTH), y+(blockHeight1), mario));
         for(i = 0; i < 3; i++)
-            Blocks.add(new Block(Block.BRICK, x+((120+i)*Block.WIDTH), y+(blockHeight2), mario));
+            Blocks.add(new Block(Block.BRICK, x+((121+i)*Block.WIDTH), y+(blockHeight2), mario));
 
-        Blocks.add(new Block(Block.BRICK, x+(127*Block.WIDTH), y+(blockHeight2), mario));
-        Blocks.add(new Block(Block.MYSTERY, x+(128*Block.WIDTH), y+(blockHeight2), mario));
+        Blocks.add(new Block(Block.BRICK, x+(128*Block.WIDTH), y+(blockHeight2), mario));
         Blocks.add(new Block(Block.MYSTERY, x+(129*Block.WIDTH), y+(blockHeight2), mario));
-        Blocks.add(new Block(Block.BRICK, x+(130*Block.WIDTH), y+(blockHeight2), mario));
-        Blocks.add(new Block(Block.BRICK, x+(128*Block.WIDTH), y+(blockHeight1), mario));
+        Blocks.add(new Block(Block.MYSTERY, x+(130*Block.WIDTH), y+(blockHeight2), mario));
+        Blocks.add(new Block(Block.BRICK, x+(131*Block.WIDTH), y+(blockHeight2), mario));
         Blocks.add(new Block(Block.BRICK, x+(129*Block.WIDTH), y+(blockHeight1), mario));
+        Blocks.add(new Block(Block.BRICK, x+(130*Block.WIDTH), y+(blockHeight1), mario));
 
         // Stone Staircases.
         for(i = 1; i <= 4; i++){
@@ -224,14 +224,43 @@ public class Platform
     }
 
     /**
-     * Creates background screen.
+     * Renders Background and Landscape.
      * TODO - Add Clouds and Bushes.
      */
     private void renderBack(Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
+
+        // Draws Background.
         g2.setColor(new Color(100, 160, 255)); // Background Color.
         g2.fillRect(0,0,mario.getWidth(),mario.getHeight());
+
+        // Renders Landscape Elements.
+        { // Bushes.
+            Platform.renderBushTYPE1(x, y + (11 * Block.HEIGHT), 2, g);
+            Platform.renderBushTYPE2(x + (11 * Block.WIDTH), y + (12 * Block.HEIGHT), 3, g);
+            Platform.renderBushTYPE1(x + (16 * Block.WIDTH), y + (12 * Block.HEIGHT), 1, g);
+            Platform.renderBushTYPE2(x + (23 * Block.WIDTH), y + (12 * Block.HEIGHT), 1, g);
+            Platform.renderBushTYPE2(x + (41 * Block.WIDTH), y + (12 * Block.HEIGHT), 2, g);
+            Platform.renderBushTYPE1(x + (48 * Block.WIDTH), y + (11 * Block.HEIGHT), 2, g);
+            Platform.renderBushTYPE2(x + (59 * Block.WIDTH), y + (12 * Block.HEIGHT), 3, g);
+            Platform.renderBushTYPE1(x + (64 * Block.WIDTH), y + (12 * Block.HEIGHT), 1, g);
+            Platform.renderBushTYPE2(x + (71 * Block.WIDTH), y + (12 * Block.HEIGHT), 1, g);
+            Platform.renderBushTYPE2(x + (89 * Block.WIDTH), y + (12 * Block.HEIGHT), 2, g);
+            Platform.renderBushTYPE1(x + (96 * Block.WIDTH), y + (11 * Block.HEIGHT), 2, g);
+            Platform.renderBushTYPE2(x + (107 * Block.WIDTH), y + (12 * Block.HEIGHT), 3, g);
+            Platform.renderBushTYPE1(x + (112 * Block.WIDTH), y + (12 * Block.HEIGHT), 1, g);
+            Platform.renderBushTYPE2(x + (119 * Block.WIDTH), y + (12 * Block.HEIGHT), 1, g);
+            Platform.renderBushTYPE2(x + (137 * Block.WIDTH), y + (12 * Block.HEIGHT), 2, g);
+            Platform.renderBushTYPE1(x + (144 * Block.WIDTH), y + (11 * Block.HEIGHT), 2, g);
+            Platform.renderBushTYPE2(x + (157 * Block.WIDTH), y + (12 * Block.HEIGHT), 1, g);
+            Platform.renderBushTYPE1(x + (160 * Block.WIDTH), y + (12 * Block.HEIGHT), 1, g);
+            Platform.renderBushTYPE2(x + (167 * Block.WIDTH), y + (12 * Block.HEIGHT), 1, g);
+            Platform.renderBushTYPE1(x + (192 * Block.WIDTH), y + (12 * Block.HEIGHT), 2, g);
+        }
+        { // Clouds.
+
+        }
     }
 
     /**
@@ -283,6 +312,40 @@ public class Platform
         if(mario.finish && flagY < y + 550)
             flagY += Platform.FLAG_SPEED;
     }
+
+    /**
+     * Renders a Bush TYPE 1.
+     * Type 1 is the Darker Simpler designed Bush.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param height Height of the bush
+     * @param g Graphics Instance.
+     */
+    private static void renderBushTYPE1(int x, int y, int height, Graphics g)
+    {
+        Graphics2D g2 = (Graphics2D) g;
+        //int i, j, k;
+        g2.setColor(Color.MAGENTA);
+        g2.fillRect(x, y, (2*height+1)*Block.WIDTH, height*Block.HEIGHT);
+        g2.setColor(Color.BLACK);
+        g2.drawString("Bush Type 1", x, y);
+    }
+
+    /**
+     * Renders a Bush TYPE 2.
+     * Lighter Bush based on CLoud.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param length of Bush.
+     * @param g Graphics Instance.
+     */
+    private static void renderBushTYPE2(int x, int y, int length, Graphics g)
+    {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(Color.MAGENTA);
+        g2.fillRect(x, y, (length+2)*Block.WIDTH, 2*Block.HEIGHT);
+        g2.setColor(Color.BLACK);
+        g2.drawString("Bush Type 2", x, y);
+    }
+
 }
-
-

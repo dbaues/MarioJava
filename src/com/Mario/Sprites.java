@@ -1,25 +1,34 @@
 package com.Mario;
-/**
- * Write a description of class Sprites here.
- *
- * @author (your name)
- * @version (a version number or a date)
- */
 
 import java.awt.*;
 
+/**
+ * Static Sprite Renders.
+ * @author Dan Bauer.
+ */
 public class Sprites
 {
-    private static final int SCALE = 3;
+    // Scale for Drawing Sprites.
+    private static final int SCALE = Block.SCALE;
 
+    // Character Sprite Renders.
+    /**
+     * Renders the "Alternate" Character model.
+     * Easter Egg from original Development.
+     * Character Model Courtesy Daniel Van Keulen, Java Geometry Dash.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param big State of the Player.
+     * @param g Graphics Instance.
+     */
     public static void renderAlt(int x, int y, boolean big, Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
+        Color p = new Color(155, 68, 168);
+        Color lb = new Color(0, 204, 255);
+        Color db = new Color(0, 0, 102);
+        Color r = new Color(255, 0, 0);
         if(big){
-            Color p = new Color(155, 68, 168);
-            Color lb = new Color(0, 204, 255);
-            Color db = new Color(0, 0, 102);
-            Color r = new Color(255, 0, 0);
             g2.setColor(p);
             g2.fillRect(x+14, y-40+28, 12, 24);
             g2.setColor(lb);
@@ -58,10 +67,6 @@ public class Sprites
             g2.fillRect(x+18, y-40+64, 4, 4);
         }
         else{
-            Color p = new Color(155, 68, 168);
-            Color lb = new Color(0, 204, 255);
-            Color db = new Color(0, 0, 102);
-            Color r = new Color(255, 0, 0);
             g2.setColor(p);
             g2.fillRect(x+14, y+14, 12, 12);
             g2.setColor(lb);
@@ -101,19 +106,32 @@ public class Sprites
         }
     }
 
-    public static void renderMario(int x, int y, boolean big, String type, Graphics g)
+    /**
+     * Draws the Character model.
+     * Can be Mario or Luigi.
+     * @param x Coordinate.
+     * @param y Coordinate.
+     * @param big Players state.
+     * @param name Character Name.
+     * @param g Graphics Intsance.
+     */
+    public static void renderMario(int x, int y, boolean big, String name, Graphics g)
     {
         Graphics2D g2 = (Graphics2D) g;
-        g2.setColor(Color.RED);
+        Color primary;
+
         Sprites.renderAlt(x, y, big, g);
-        /*if(big){
-            g2.fillRect(x, y-40, 40, 80);
-        }
-        else{
-            g2.fillRect(x, y, 40, 40);
-        }*/
+        if(name.equals("MARIO"))
+            primary = Color.RED;
+        else if(name.equals("LUIGI"))
+            primary = Color.GREEN;
+        else
+            primary = Color.BLACK; // Used as an Easter Egg.
+
+        g2.setColor(primary);
     }
 
+    // Item Sprite Renders.
     /**
      * Renders Default Item.
      * @param x Coordinate.
@@ -209,6 +227,8 @@ public class Sprites
         Sprites.renderDefaultItem(x, y, g);
     }
 
+    // Enemy Sprite Renders.
+    /*
     public static void renderGoomba(int x, int y, Graphics g)
     {
     }
@@ -216,4 +236,5 @@ public class Sprites
     public static void renderKoopa(int x, int y, Graphics g)
     {
     }
+     */
 }

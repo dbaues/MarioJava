@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 /**
  * Main Game Class.
- * BY: Dan Bauer
+ * @author Dan Bauer
  * Original: 5/23/2018
- * Update: 5/27/2018
+ * Updated: 5/27/2018
  */
 public class Mario extends Canvas implements Runnable
 {
@@ -18,7 +18,7 @@ public class Mario extends Canvas implements Runnable
     public boolean up, down, left, right; // player movement
     //public static boolean go; //start motion
     //public boolean motion = true;
-    public static final int width = 1035, height = 15 * Block.HEIGHT - 11; // JFrame dimensions
+    public static final int width = 1035, height = (15*Block.HEIGHT)-11; // JFrame dimensions
     BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
     Dimension dim = new Dimension(width, height);
     Thread gameThread;
@@ -27,9 +27,8 @@ public class Mario extends Canvas implements Runnable
     InputHandler ih;
     Platform pf;
     Character ch;
-    Items shroom, shroom2; // to be phased out.
     ArrayList<Items> items;
-    public static double speed = 10, jspeed = 15; // Player movement speeds.
+    public static double speed = 8, jspeed = 12; // Player movement speeds.
 
     // Game Fields.
     public int score, coins, lives = 4;
@@ -95,7 +94,7 @@ public class Mario extends Canvas implements Runnable
         ui = new UI(this);
         ih = new InputHandler(frame, this, this);
         pf = new Platform(this);
-        ch = new Character(name, 300, 500, this);
+        ch = new Character(name, 384, 480, this);
         items = new ArrayList<>();
 
         // New Sound Initialization. Loads the Misc. GameSounds.
@@ -130,15 +129,6 @@ public class Mario extends Canvas implements Runnable
         for(Items i : items)         // Items.
             i.tick();
 
-
-        if(shroom != null){
-            shroom.checkCollision();
-            shroom.tick();
-        }
-        if(shroom2 != null){
-            shroom2.checkCollision();
-            shroom2.tick();
-        }
         if(lives >= 0) {
             if(died && ui.getA() >= 255){
                 obsolete++;
@@ -148,7 +138,7 @@ public class Mario extends Canvas implements Runnable
                     mainSound.stop();   // Stops Main Soundtrack in event of Death.
                 }
                 else if(obsolete == 183){
-                    ch.setLocation(300, 500);
+                    ch.setLocation(350,500);
                     playSound(GameSound.MAIN_SOUND_ID);
                     died = false;
                     obsolete = 0;
@@ -195,11 +185,6 @@ public class Mario extends Canvas implements Runnable
         if(pf != null){ pf.render(g); } // Draws Platform.
         if(ch != null){ ch.render(g); } // Draws the Character.
         if(ui != null){ ui.render(g); } // Draws UI Elements.
-
-        if(shroom != null) // Draws first Mushroom Item.
-            shroom.render(g);
-        if(shroom2 != null) // Draws second Mushroom Item.
-            shroom2.render(g);
 
         // Testing Drawing.
         //Sprites.renderMushroom(50, 50, g);

@@ -34,8 +34,10 @@ public class InputHandler implements KeyListener
     {
         int keyCode = e.getKeyCode();
         // When the UP ARROW or W KEY is pressed.
-        if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W /*&& mario.jump*/)
+        if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W /*&& mario.jump*/) {
+            mario.down = false;
             mario.up = true; // Up boolean. Moves Player up.
+        }
 
         // When the DOWN ARROW or S KEY is pressed.
         if(keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S)
@@ -68,7 +70,7 @@ public class InputHandler implements KeyListener
         // When UP ARROW or W KEY is released.
         if(keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_W){
             mario.up = false; // Up Motion will stop.
-            //mario.jump = false;
+            mario.down = true;
         }
         // When DOWN ARROW or S KEY is released.
         if(keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_S)
